@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\UGMessenger.Application\UGMessenger.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\UGMessenger.Infrastructure\UGMessenger.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\UGMessenger.Persistence\UGMessenger.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
