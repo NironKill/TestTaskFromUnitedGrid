@@ -2,7 +2,7 @@
 using Chat.Application.Interfaces;
 using Chat.Application.Repositories.Abstract;
 using Chat.Application.Repositories.Interfaces;
-using Chat.Domain;
+using Chat.Domain.Entity;
 using System.Linq.Expressions;
 
 namespace Chat.Application.Repositories.Implementations
@@ -15,11 +15,7 @@ namespace Chat.Application.Repositories.Implementations
         {
             Id = Guid.NewGuid(),
             AttachmentId = dto.AttachedId,
-            EditedAt = dto.EditedAt,
-            SentAt = dto.SentAt,
             ChatId = dto.ChatId,
-            IsEdited = dto.IsEdited,
-            IsRead = dto.IsRead,
             SenderId = dto.SenderId,
             Text = dto.Text
         };
@@ -30,7 +26,6 @@ namespace Chat.Application.Repositories.Implementations
             EditedAt = entity.EditedAt,
             SentAt = entity.SentAt,
             ChatId = entity.ChatId,
-            IsEdited= entity.IsEdited,
             IsRead= entity.IsRead,
             SenderId= entity.SenderId,
             Text= entity.Text

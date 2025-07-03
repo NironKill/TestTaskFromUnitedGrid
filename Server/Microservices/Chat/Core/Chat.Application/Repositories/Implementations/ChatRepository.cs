@@ -5,11 +5,11 @@ using Chat.Application.Repositories.Interfaces;
 
 namespace Chat.Application.Repositories.Implementations
 {
-    public class ChatRepository : BaseRepository<Domain.Chat, ChatCreateDTO, ChatGetDTO>, IChatRepository
+    public class ChatRepository : BaseRepository<Domain.Entity.Chat, ChatCreateDTO, ChatGetDTO>, IChatRepository
     {
         public ChatRepository(IApplicationDbContext context) : base(context) { }
 
-        protected override Domain.Chat MapCreateDTOToEntity(ChatCreateDTO dto) => new Domain.Chat
+        protected override Domain.Entity.Chat MapCreateDTOToEntity(ChatCreateDTO dto) => new Domain.Entity.Chat
         {
             Id = Guid.NewGuid(),
             Name = dto.Name,
@@ -17,7 +17,7 @@ namespace Chat.Application.Repositories.Implementations
             Type = dto.Type,
             IsPublic = dto.IsPublic
         };
-        protected override ChatGetDTO MapEntityToGetDTO(Domain.Chat entity) => new ChatGetDTO
+        protected override ChatGetDTO MapEntityToGetDTO(Domain.Entity.Chat entity) => new ChatGetDTO
         {
             Id = entity.Id,
             Description = entity.Description,

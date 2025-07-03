@@ -1,4 +1,4 @@
-﻿using Chat.Domain;
+﻿using Chat.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

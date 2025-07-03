@@ -1,6 +1,67 @@
 {
-  "GlobalConfiguration": {},
   "Routes": [
-    {}
-  ]
+    {
+      "DownstreamPathTemplate": "/chat-api/{controller}/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "",
+          "Port": 0
+        }
+      ],
+      "UpstreamPathTemplate": "/chat-api/{controller}/{action}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PATCH", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/chat-api/{controller}/{action}/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "",
+          "Port": 0
+        }
+      ],
+      "UpstreamPathTemplate": "/chat-api/{controller}/{action}/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/identiny-api/Account/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "",
+          "Port": 1
+        }
+      ],
+      "UpstreamPathTemplate": "/identity-api/Account/{action}",
+      "UpstreamHttpMethod": [ "POST", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/identiny-api/User/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "",
+          "Port": 1
+        }
+      ],
+      "UpstreamPathTemplate": "/identity-api/User/{action}",
+      "UpstreamHttpMethod": [ "GET", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/identiny-api/User/{action}/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "",
+          "Port": 1
+        }
+      ],
+      "UpstreamPathTemplate": "/identity-api/User/{action}/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": ""
+  }
 }

@@ -2,7 +2,7 @@
 using Chat.Application.Interfaces;
 using Chat.Application.Repositories.Abstract;
 using Chat.Application.Repositories.Interfaces;
-using Chat.Domain;
+using Chat.Domain.Entity;
 
 namespace Chat.Application.Repositories.Implementations
 {

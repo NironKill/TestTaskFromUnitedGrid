@@ -2,7 +2,7 @@
 {
     public class MembershipGetDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid MemderId { get; set; }
         public Guid ChatId { get; set; }
         public DateTime JoinedAt { get; set; }

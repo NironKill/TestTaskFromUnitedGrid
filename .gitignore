@@ -5,6 +5,7 @@
 
 # Configuration for local development
 *.Development.json
+*.db
 
 # User-specific files
 *.rsuser

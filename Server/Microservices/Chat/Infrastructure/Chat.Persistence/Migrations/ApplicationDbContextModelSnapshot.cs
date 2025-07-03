@@ -22,7 +22,7 @@ namespace Chat.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Chat.Domain.Attachment", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Attachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Chat.Persistence.Migrations
                     b.ToTable("Attachments");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Chat", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Chat", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,7 +65,7 @@ namespace Chat.Persistence.Migrations
                     b.ToTable("Chats");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Member", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Member", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,13 +83,11 @@ namespace Chat.Persistence.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Membership", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Membership", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("BlockedAt")
                         .HasColumnType("datetime2");
@@ -119,7 +117,7 @@ namespace Chat.Persistence.Migrations
                     b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Message", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,9 +131,6 @@ namespace Chat.Persistence.Migrations
 
                     b.Property<DateTime?>("EditedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
@@ -161,15 +156,15 @@ namespace Chat.Persistence.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Membership", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Membership", b =>
                 {
-                    b.HasOne("Chat.Domain.Chat", "Chat")
+                    b.HasOne("Chat.Domain.Entity.Chat", "Chat")
                         .WithMany("Memberships")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Chat.Domain.Member", "Member")
+                    b.HasOne("Chat.Domain.Entity.Member", "Member")
                         .WithMany("Memberships")
                         .HasForeignKey("MemderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -180,19 +175,19 @@ namespace Chat.Persistence.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Message", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Message", b =>
                 {
-                    b.HasOne("Chat.Domain.Attachment", "Attachment")
+                    b.HasOne("Chat.Domain.Entity.Attachment", "Attachment")
                         .WithMany("Messages")
                         .HasForeignKey("AttachmentId");
 
-                    b.HasOne("Chat.Domain.Chat", "Chat")
+                    b.HasOne("Chat.Domain.Entity.Chat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Chat.Domain.Member", "Member")
+                    b.HasOne("Chat.Domain.Entity.Member", "Member")
                         .WithMany("Messages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -205,19 +200,19 @@ namespace Chat.Persistence.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Attachment", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Attachment", b =>
                 {
                     b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Chat", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Chat", b =>
                 {
                     b.Navigation("Memberships");
 
                     b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("Chat.Domain.Member", b =>
+            modelBuilder.Entity("Chat.Domain.Entity.Member", b =>
                 {
                     b.Navigation("Memberships");
 

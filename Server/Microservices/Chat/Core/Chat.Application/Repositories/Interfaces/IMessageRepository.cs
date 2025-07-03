@@ -1,6 +1,6 @@
 ﻿using Chat.Application.DTOs.Message;
 using Chat.Application.Repositories.Abstract;
-using Chat.Domain;
+using Chat.Domain.Entity;
 
 namespace Chat.Application.Repositories.Interfaces
 {

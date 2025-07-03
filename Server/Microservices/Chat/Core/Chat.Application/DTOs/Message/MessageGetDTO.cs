@@ -9,7 +9,6 @@
         public string Text { get; set; }
         public DateTime SentAt { get; set; }
         public DateTime? EditedAt { get; set; }
-        public bool IsEdited { get; set; } 
         public bool IsRead { get; set; } 
     }
 }

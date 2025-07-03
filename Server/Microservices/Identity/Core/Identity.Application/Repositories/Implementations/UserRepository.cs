@@ -19,25 +19,32 @@ namespace Identity.Application.Repositories.Implementations
             _userManager = userManager;
         }
 
-        public async Task Remove(ICollection<string> emails)
+        public async Task<bool> Delete(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {
-            foreach (string email in emails)
-            {
-                User user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            User user = await _context.Users.FirstOrDefaultAsync(predicate, cancellationToken);
 
-                await _userManager.DeleteAsync(user);
-            }
+            await _userManager.DeleteAsync(user);        
+
+            return true;
         }
-        public async Task Update(Expression<Func<User, bool>> predicate, Action<User> update)
+        public async Task<UserGetDTO> Update(Expression<Func<User, bool>> predicate, Action<User> update, CancellationToken cancellationToken)
         {
             User user = await _context.Users.FirstOrDefaultAsync(predicate);
 
             update(user);
 
             await _userManager.UpdateAsync(user);
+
+            return new UserGetDTO
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = $"{user.FirstName} {user.LastName}",
+                UserName =  user.UserName
+            };
         }
 
-        public async Task<UserGetDTO> Get(Expression<Func<User, bool>> predicate)
+        public async Task<UserGetDTO> Get(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {
             User user = await _context.Users.FirstOrDefaultAsync(predicate);
 
@@ -51,7 +58,7 @@ namespace Identity.Application.Repositories.Implementations
             return dto;
         }
 
-        public async Task<ICollection<UserGetDTO>> GetAll(Guid? id = null)
+        public async Task<ICollection<UserGetDTO>> GetAll(CancellationToken cancellationToken, Guid? id = null)
         {
             IQueryable<User> query = _context.Users;
 

@@ -3,7 +3,7 @@ using Chat.Application.Repositories.Abstract;
 
 namespace Chat.Application.Repositories.Interfaces
 {
-    public interface IChatRepository : IBaseRepository<Domain.Chat, ChatCreateDTO, ChatGetDTO>
+    public interface IChatRepository : IBaseRepository<Domain.Entity.Chat, ChatCreateDTO, ChatGetDTO>
     {
     }
 }

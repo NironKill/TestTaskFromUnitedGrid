@@ -1,5 +1,5 @@
 ﻿using Chat.Application.Interfaces;
-using Chat.Domain;
+using Chat.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Persistence.Common
@@ -7,7 +7,7 @@ namespace Chat.Persistence.Common
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public DbSet<Member> Members { get; set; }
-        public DbSet<Domain.Chat> Chats { get; set; }
+        public DbSet<Domain.Entity.Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Membership> Memberships { get; set; }
