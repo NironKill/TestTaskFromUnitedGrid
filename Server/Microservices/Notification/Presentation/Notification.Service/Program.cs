@@ -1,5 +1,5 @@
-using Notification.Application;
 using Notification.Infrastructure;
+using Notification.Infrastructure.Options;
 using Serilog;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
@@ -10,8 +10,9 @@ builder.Services.AddSerilog(config =>
     config.Enrich.FromLogContext();
 });
 
+builder.Services.Configure<EmailOption>(builder.Configuration.GetSection("Email"));
+
 builder.Services
-    .AddApplication()
     .AddInfrastructure();
 
 IHost host = builder.Build();

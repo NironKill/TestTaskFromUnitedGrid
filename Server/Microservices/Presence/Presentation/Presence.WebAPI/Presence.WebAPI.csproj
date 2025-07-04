@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Presence.Application\Presence.Application.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Presence.Infrastructure\Presence.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Presence.Persistence\Presence.Persistence.csproj" />
   </ItemGroup>
 

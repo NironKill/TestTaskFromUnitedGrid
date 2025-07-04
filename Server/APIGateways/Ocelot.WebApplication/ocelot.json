@@ -59,6 +59,18 @@
       ],
       "UpstreamPathTemplate": "/identity-api/User/{action}/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/presence-api/{controller}/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "",
+          "Port": 2
+        }
+      ],
+      "UpstreamPathTemplate": "/presence-api/{controller}/{action}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
     }
   ],
   "GlobalConfiguration": {
