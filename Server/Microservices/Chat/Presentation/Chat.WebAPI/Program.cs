@@ -1,4 +1,5 @@
 using Chat.Application;
+using Chat.Infrastructure;
 using Chat.Persistence;
 using Chat.Persistence.Common;
 using Serilog;
@@ -16,6 +17,7 @@ builder.Services.AddOpenApi();
 
 builder.Services
     .AddApplication()
+    .AddInfrastructure()
     .AddPersistence(builder.Configuration);
 
 WebApplication app = builder.Build();

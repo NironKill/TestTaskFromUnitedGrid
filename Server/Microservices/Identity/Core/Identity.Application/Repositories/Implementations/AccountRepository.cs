@@ -24,11 +24,11 @@ namespace Identity.Application.Repositories.Implementations
             _accessToken = accessToken;
         }
 
-        public async Task<bool> Registration(RegisterDTO dto, CancellationToken cancellationToken)
+        public async Task<Guid> Registration(RegisterDTO dto, CancellationToken cancellationToken)
         {
             User user = new User
             {
-                UserName = dto.Email,
+                UserName = dto.UserName,
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
@@ -42,25 +42,25 @@ namespace Identity.Application.Repositories.Implementations
                 {
                     IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole<Guid>(Role.Admin.ToString()));
                     if (!roleResult.Succeeded)
-                        return false;
+                        return Guid.Empty;
                 }
                 if (!await _roleManager.RoleExistsAsync(Role.User.ToString()))
                 {
                     IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole<Guid>(Role.User.ToString()));
                     if (!roleResult.Succeeded)
-                        return false;
+                        return Guid.Empty;
                 }
 
                 await _accessToken.Create(user.Id, cancellationToken);
 
                 IdentityResult addToRoleResult = await _userManager.AddToRoleAsync(user, Role.User.ToString());
                 if (!addToRoleResult.Succeeded)
-                    return false;
+                    return Guid.Empty;
 
                 await _signInManager.SignInAsync(user, false);
-                return true;
+                return user.Id;
             }
-            return false;
+            return Guid.Empty;
         }
         public async Task<bool> Login(LoginDTO dto)
         {

@@ -1,5 +1,6 @@
 using Identity.Application;
 using Identity.Domain;
+using Identity.Infrastructure;
 using Identity.Persistence;
 using Identity.Persistence.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -67,6 +68,7 @@ builder.Services.AddOpenApi();
 
 builder.Services
     .AddApplication()
+    .AddInfrastructure()
     .AddPersistence(builder.Configuration);
 
 WebApplication app = builder.Build();

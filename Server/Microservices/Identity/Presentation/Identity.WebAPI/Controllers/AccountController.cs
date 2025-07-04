@@ -1,5 +1,7 @@
 ﻿using Identity.Application.DTOs.Account;
+using Identity.Application.DTOs.User;
 using Identity.Application.Repositories.Interfaces;
+using Identity.Infrastructure.RabbitMQ.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.WebAPI.Controllers
@@ -8,9 +10,16 @@ namespace Identity.WebAPI.Controllers
     [Route("identiny-api/[controller]/[action]")]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountRepository _account;
+        private readonly IAccountRepository _account;    
+        private readonly IMessageBusClient _messageBus;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAccountRepository account) => _account = account;
+        public AccountController(IAccountRepository account, IMessageBusClient messageBus, ILogger<AccountController> logger)
+        {
+            _account = account;
+            _messageBus = messageBus;
+            _logger = logger;
+        }
 
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -19,13 +28,31 @@ namespace Identity.WebAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool isRegistered = await _account.Registration(dto, cancellationToken);
-                if (isRegistered)
-                    return BadRequest();
+                Guid userId = await _account.Registration(dto, cancellationToken);
+                if (userId != Guid.Empty)
+                {
+                    try
+                    {
+                        UserPublishedDTO userPublishedDto = new UserPublishedDTO()
+                        {
+                            Id = userId,
+                            UserName = dto.UserName
+                        };
+                        userPublishedDto.Event = "User_Published";
+                        _messageBus.PublishNewPlatform(userPublishedDto);
+
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"--> Could not send asynchronously: {ex.Message}");
+                        return BadRequest();
+                    }
+                }
 
                 ModelState.AddModelError(string.Empty, "An error occurred while registering the user.");
             }
-            return Ok();
+            return BadRequest();
         }
 
         [HttpPost("Login")]
@@ -37,11 +64,11 @@ namespace Identity.WebAPI.Controllers
             {
                 bool isLoggedIn = await _account.Login(dto);
                 if (isLoggedIn)
-                    return BadRequest();
+                    return Ok();
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
-            return Ok();
+            return BadRequest();
         }
 
         [Route("Logout")]
