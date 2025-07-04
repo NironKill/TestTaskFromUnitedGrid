@@ -1,4 +1,4 @@
-﻿namespace Notification.Infrastructure.Options
+﻿namespace Notification.Infrastructure.Email.Options
 {
     public class EmailOption
     {

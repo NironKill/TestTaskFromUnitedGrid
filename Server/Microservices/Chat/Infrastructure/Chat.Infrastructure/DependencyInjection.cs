@@ -1,5 +1,6 @@
-﻿using Chat.Infrastructure.RabbitMQ.Processor;
-using Chat.Infrastructure.RabbitMQ.Services;
+﻿using Chat.Infrastructure.RabbitMQ.Pub.Services;
+using Chat.Infrastructure.RabbitMQ.Sub.Processor;
+using Chat.Infrastructure.RabbitMQ.Sub.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Infrastructure
@@ -11,7 +12,7 @@ namespace Chat.Infrastructure
             services.AddHostedService<MessageBusSubscriber>();
 
             services.AddSingleton<IEventProcessor, EventProcessor>();
-
+            services.AddSingleton<IMessageBusClient, MessageBusClient>();
             return services;
         }
     }

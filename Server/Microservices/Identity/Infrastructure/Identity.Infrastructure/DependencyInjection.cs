@@ -1,4 +1,4 @@
-﻿using Identity.Infrastructure.RabbitMQ.Services;
+﻿using Identity.Infrastructure.RabbitMQ.Pub.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure

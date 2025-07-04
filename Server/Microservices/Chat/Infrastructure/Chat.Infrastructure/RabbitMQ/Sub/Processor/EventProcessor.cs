@@ -5,18 +5,17 @@ using Chat.Infrastructure.RabbitMQ.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
-using System.Threading;
 
-namespace Chat.Infrastructure.RabbitMQ.Processor
+namespace Chat.Infrastructure.RabbitMQ.Sub.Processor
 {
     public class EventProcessor : IEventProcessor
     {
-        private readonly IMemberRepository _member;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<EventProcessor> _logger;
-
-        public EventProcessor(IMemberRepository member, ILogger<EventProcessor> logger)
+        
+        public EventProcessor(IServiceScopeFactory scopeFactory, ILogger<EventProcessor> logger)
         {
-            _member = member;
+            _scopeFactory = scopeFactory;
             _logger = logger;
         }
 
@@ -42,8 +41,8 @@ namespace Chat.Infrastructure.RabbitMQ.Processor
 
             switch (eventType.Event)
             {
-                case "Platform_Published":
-                    _logger.LogInformation("--> Platform Published Event Detected");
+                case "User_Published":
+                    _logger.LogInformation("--> Member Published Event Detected");
                     return EventType.UserPublished;
                 default:
                     _logger.LogWarning("--> Could not determine the event type");
@@ -52,23 +51,27 @@ namespace Chat.Infrastructure.RabbitMQ.Processor
         }
         private async Task AddMember(string userPublishedMessage, CancellationToken cancellationToken)
         {
-            MemberSubDTO sub = JsonSerializer.Deserialize<MemberSubDTO>(userPublishedMessage);
-
-            try
+            using (IServiceScope scope = _scopeFactory.CreateScope())
             {
-                MemberCreateDTO dto = new MemberCreateDTO()
+                IMemberRepository memberRepo = scope.ServiceProvider.GetRequiredService<IMemberRepository>();
+                MemberSubDTO sub = JsonSerializer.Deserialize<MemberSubDTO>(userPublishedMessage);
+
+                try
                 {
-                    UserId = sub.Id,
-                    UserName = sub.UserName
-                };
+                    MemberCreateDTO dto = new MemberCreateDTO()
+                    {
+                        UserId = sub.Id,
+                        UserName = sub.UserName
+                    };
 
-                await _member.Create(dto, default);
-                _logger.LogInformation("--> Member added!");
+                    await memberRepo.Create(dto, cancellationToken);
+                    _logger.LogInformation("--> Member added!");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"--> Could not add Member to DB {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"--> Could not add Member to DB {ex.Message}");
-            }           
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using Chat.Infrastructure.RabbitMQ.Processor;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Notification.Infrastructure.RabbitMQ.Sub.Processor;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
-namespace Chat.Infrastructure.RabbitMQ.Services
+namespace Notification.Infrastructure.RabbitMQ.Sub.Services
 {
     public class MessageBusSubscriber : BackgroundService
     {
@@ -61,8 +61,8 @@ namespace Chat.Infrastructure.RabbitMQ.Services
 
         private void InitializeRabbitMQ()
         {
-            var factory = new ConnectionFactory() 
-            {   
+            var factory = new ConnectionFactory()
+            {
                 HostName = _configuration["RabbitMQHost"],
                 Port = int.Parse(_configuration["RabbitMQPort"])
             };

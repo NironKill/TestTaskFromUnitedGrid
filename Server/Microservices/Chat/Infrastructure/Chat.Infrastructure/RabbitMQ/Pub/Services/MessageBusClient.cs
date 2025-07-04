@@ -1,11 +1,11 @@
-﻿using Identity.Application.DTOs.User;
+﻿using Chat.Application.DTOs.Message;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace Identity.Infrastructure.RabbitMQ.Services
+namespace Chat.Infrastructure.RabbitMQ.Pub.Services
 {
     public class MessageBusClient : IMessageBusClient
     {
@@ -42,7 +42,7 @@ namespace Identity.Infrastructure.RabbitMQ.Services
             _logger = logger;
         }
 
-        public void PublishNewPlatform(UserPublishedDTO dto)
+        public void PublishUnreadMessage(MessagePublishedDTO dto)
         {
             string message = JsonSerializer.Serialize(dto);
 
@@ -74,6 +74,6 @@ namespace Identity.Infrastructure.RabbitMQ.Services
                 _connection.Close();
             }
         }
-        private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e) => _logger.LogInformation("--> RabbitMQ Connection Shutdown");     
+        private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e) => _logger.LogInformation("--> RabbitMQ Connection Shutdown");
     }
 }

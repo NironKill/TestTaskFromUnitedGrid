@@ -1,4 +1,4 @@
-﻿namespace Chat.Infrastructure.RabbitMQ.Processor
+﻿namespace Notification.Infrastructure.RabbitMQ.Sub.Processor
 {
     public interface IEventProcessor
     {

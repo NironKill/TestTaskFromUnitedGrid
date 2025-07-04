@@ -1,7 +1,7 @@
 ﻿using Identity.Application.DTOs.Account;
 using Identity.Application.DTOs.User;
 using Identity.Application.Repositories.Interfaces;
-using Identity.Infrastructure.RabbitMQ.Services;
+using Identity.Infrastructure.RabbitMQ.Pub.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.WebAPI.Controllers
@@ -39,7 +39,7 @@ namespace Identity.WebAPI.Controllers
                             UserName = dto.UserName
                         };
                         userPublishedDto.Event = "User_Published";
-                        _messageBus.PublishNewPlatform(userPublishedDto);
+                        _messageBus.PublishNewUser(userPublishedDto);
 
                         return Ok();
                     }
